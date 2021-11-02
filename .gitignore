@@ -1,1 +1,4 @@
 # things to ignore
+
+# __pycache__ for python 3.7
+*.cpython-37.pyc
