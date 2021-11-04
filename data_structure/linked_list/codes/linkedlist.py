@@ -24,9 +24,8 @@ class LinkedList:
         s = f'no nodes in the list' if not node else f'Keys in the list:  '
         print(s, end="")
         while not not node:
-            print(f'{node.key}', end=", ")
+            print(f'{node.key}', end="->" if not not node.next else "\n")
             node = node.next
-        print('')
 
     # add new node to the front of a linked list
     def push(self, key) -> None:
@@ -42,7 +41,7 @@ class LinkedList:
         node.next = Node(key)
     
     # add new node right after the given key
-    def addAfter(self, prev_node, next_key) -> None:
+    def pushAfter(self, prev_node, next_key) -> None:
         if not prev_node:
             return
         new_node = Node(next_key)
@@ -51,7 +50,7 @@ class LinkedList:
         prev_node.next = new_node
 
     # iterative way of deletion - recursive not possible in python for singly linked list
-    def delete(self, key) -> None:
+    def deleteKey(self, key) -> None:
         node = self.head
 
         # if head is to be deleted, and it's not none
@@ -64,16 +63,50 @@ class LinkedList:
             while not not node.next:
                 # next node is to deleted
                 if node.next.key == key:
-                    next_node = node.next.next
                     to_del = node.next
-                    node.next = next_node
+                    node.next = node.next.next
                     del to_del
                     break
                 node = node.next
 
+    def deleteIndex(self, index) -> None:
+        node = self.head
+        if index == 0:
+            self.head = node.next
+            del node
+            return
+        i = 0
+        node = self.head
+        while i < index-1 and not not node:
+            node = node.next
+            i += 1
+        if not node:
+            return
+        if not node.next:
+            return
+        to_del = node.next
+        node.next = node.next.next
+        del to_del
+
+    # length of linked list
+    def __len__(self) -> int:
+        l = 0
+        node = self.head
+        while not not node:
+            node = node.next
+            l += 1
+        return l
+
     # for representation
     def __repr__(self) -> str:
         return f'LinkedList(head={self.head})'
+
+
+# recursive way - length of linked list
+def length(head: Node):
+    if not head:
+        return 0
+    return 1 + length(head.next)
 
 
 def main():
@@ -100,12 +133,17 @@ def main():
 
     # add new node after the given node
     newYear = 1988
-    llist.addAfter(first, newYear)
+    llist.pushAfter(first, newYear)
+
+    print(f'length(recursive) - {length(llist.head)}')
+    print(f'length(iterative) - {len(llist)}')
+
+    llist.printList()
 
     # delete node of 'head'(head) - 1988(between) - 'tail of a dragon'(tail)
-    llist.delete('head')
-    llist.delete(1988)
-    llist.delete('tail of a dragon')
+    llist.deleteKey('head')
+
+    llist.deleteIndex(4)
 
     # using a python class __repr__ can make automatic traversal through linked list
     # , though defining a function may be desirable
