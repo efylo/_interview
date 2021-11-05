@@ -72,7 +72,7 @@ class MinHeap:
     # recursive pop, external access limited
     def __pop(self, i=0):
         l = len(self.items)-1
-        if l == 0:
+        if l < 0:
             return None
         if i == l:
             return self.items.pop(i)
