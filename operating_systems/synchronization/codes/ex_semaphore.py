@@ -1,5 +1,4 @@
 from threading import Thread
-from time import sleep
 
 
 class Semaphore_:
@@ -22,7 +21,7 @@ def f(s: Semaphore_, i: int):
     """thread to run"""
     # ask for semaphore acquire
     s.P(i)
-    # do some functionality
+    # do some functionality - if costly, then it is blocked from other thread sometimes
     x = [1, 2, 3, 4]
     for i in range(100):
         for j in range(100):
